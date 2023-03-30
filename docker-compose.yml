@@ -1,0 +1,22 @@
+version: "1.0"
+secrets:
+  db_postgres_password:
+    file: .db_postgres_password
+services:
+  app_database:
+    image: postgres:15.2
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    networks:
+      - default
+    environment:
+      POSTGRES_DB: burch
+      POSTGRES_INITDB_ARGS: "-E UTF8"
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_postgres_password
+    volumes:
+      - "./postgres/data:/var/lib/postgresql/data"
+      - "./.env:/.env"
+      - "./src:/usr/src/app/src"
+    secrets:
+      - db_postgres_password
+    restart: always
