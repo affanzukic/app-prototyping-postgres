@@ -7,3 +7,5 @@
 .db_postgres_password
 
 /postgres
+
+.DS_Store

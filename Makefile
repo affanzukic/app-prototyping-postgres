@@ -44,7 +44,7 @@ down:
 deploy:
 	@echo "Deploying database"
 	@if [ ! -f .deployed ]; then \
-		sleep 5; \
+		sleep 10; \
     docker-compose exec -T $(DOCKER_CONTAINER_NAME) su -c "psql -U postgres -d $(DB_NAME) -f $(START_FILE)" postgres; \
     docker-compose exec -T $(DOCKER_CONTAINER_NAME) su -c "chmod -R 777 /var/lib/postgresql/data"; \
     touch .deployed; \
