@@ -40,15 +40,14 @@ down:
 	@docker-compose run --rm -T $(DOCKER_CONTAINER_NAME) su -c "chmod -R 777 /var/lib/postgresql/data"
 	@echo "Containers stopped";
 
-
 deploy:
 	@echo "Deploying database"
-	@if [ ! -f .deployed ]; then \
+	@if [ ! -f .deployed ] && docker ps --format '{{.Names}}' | grep -q "$(DOCKER_CONTAINER_NAME)"; then \
 		sleep 10; \
-    docker-compose exec -T $(DOCKER_CONTAINER_NAME) su -c "psql -U postgres -d $(DB_NAME) -f $(START_FILE)" postgres; \
-    docker-compose exec -T $(DOCKER_CONTAINER_NAME) su -c "chmod -R 777 /var/lib/postgresql/data"; \
-    touch .deployed; \
-  fi;
+		docker-compose exec -T $(DOCKER_CONTAINER_NAME) su -c "psql -U postgres -d $(DB_NAME) -f $(START_FILE)" postgres; \
+		docker-compose exec -T $(DOCKER_CONTAINER_NAME) su -c "chmod -R 777 /var/lib/postgresql/data"; \
+		touch .deployed; \
+	fi
 	@echo "Database deployed"
 
 build:
