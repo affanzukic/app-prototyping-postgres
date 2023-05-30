@@ -1,4 +1,4 @@
-version: "1.0"
+version: "2.2"
 secrets:
   db_postgres_password:
     file: .db_postgres_password
